@@ -15,9 +15,8 @@ pub fn build(b: *std.Build) void {
     const snek = b.dependency("snek", .{});
     exe.root_module.addImport("snek", snek.module("snek"));
 
-    // const mvzr = b.dependency("mvzr", .{});
-    // exe.root_module.addImport("mvzr", snek.module("mvzr"));
-    //
+    const mvzr = b.dependency("mvzr", .{});
+    exe.root_module.addImport("mvzr", mvzr.module("mvzr"));
 
     b.installArtifact(exe);
 

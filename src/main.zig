@@ -3,6 +3,7 @@ const snek = @import("snek");
 const cli = @import("cli.zig").raw;
 const search = @import("search.zig").Search;
 const builtin = @import("builtin");
+const mvzr = @import("mvzr");
 
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
