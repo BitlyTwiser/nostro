@@ -13,5 +13,7 @@ pub const raw = struct {
         if (self.type) |s_type| {
             return std.mem.eql(u8, s_type, "f");
         }
+
+        return true; // Else its always a file search
     }
 };

@@ -30,9 +30,8 @@ pub const Search = struct {
 
     // All machines that are not windows, i.e. macOS and Linux
     pub fn searchForInputStringPosix(self: Self) !void {
-        std.debug.print("Searching for value {s} on posix system at patt: {s}\n", .{ self.parsed_cli.term, self.parsed_cli.path });
-        self.search(self.parsed_cli.path);
         if (self.parsed_cli.path) |p| {
+            std.debug.print("Searching for value {s} on posix system at patt: {s}\n", .{ self.parsed_cli.term, p });
             return try self.search(p);
         }
 
@@ -73,19 +72,19 @@ pub const Search = struct {
     // Match will check all conditions for a pattern match to denote a found input string
     fn match(self: Self, match_value: []const u8) !bool {
         if (self.parsed_cli.i) |lowercase| {
-            if (lowercase) _ = std.ascii.lowerString(self.parsed_cli.term, self.parsed_cli.term);
-            _ = std.ascii.lowerString(match_value, match_value);
+            if (lowercase) _ = std.ascii.lowerString(@constCast(self.parsed_cli.term), self.parsed_cli.term);
+            _ = std.ascii.lowerString(@constCast(match_value), match_value);
         }
 
         const match_contains = std.mem.containsAtLeast(u8, match_value, 1, self.parsed_cli.term);
         const match_eql = std.mem.eql(u8, match_value, self.parsed_cli.term);
-        const match_regex: bool = false;
+        var match_regex: bool = false;
 
         // Use regex passed from user into compile and check input string
         if (self.parsed_cli.e) |use_regex| {
-            if (!use_regex) return;
+            if (!use_regex) match_regex = false;
 
-            const regex = mvzr.compile(self.parsed_cli.term orelse "");
+            const regex = mvzr.compile(self.parsed_cli.term);
             if (regex) |re| {
                 match_regex = re.isMatch(match_value);
             } else {
@@ -93,6 +92,6 @@ pub const Search = struct {
             }
         }
 
-        return match_contains || match_eql || match_regex;
+        return match_contains or match_eql or match_regex;
     }
 };
