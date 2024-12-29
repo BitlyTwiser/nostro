@@ -38,7 +38,3 @@ The output is similiar to egrep. The values, if found, are printed on individual
 
 ## Benchmarks
 Note: I did not make this application in any attempt to beat any existing tools out there (since plenty do this *exact* thing), but just a quick item to curate over an hour or two to try out different Zig regex engines. I did toss benchmarks in here simply for fun and to satiate my inner data nerd. 
-
-
-## Limitations
-Ziggrep is just a tool to find files/directories on the file system quickly, if you need to parse files, search file contents in a fast fashion for specific strings etc.. please use [Ripgrep](https://github.com/BurntSushi/ripgrep) which is a great Rust tool. :)
