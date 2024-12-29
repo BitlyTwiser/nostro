@@ -3,7 +3,6 @@ const snek = @import("snek");
 const cli = @import("cli.zig").raw;
 const search = @import("search.zig").Search;
 const builtin = @import("builtin");
-const mvzr = @import("mvzr");
 
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
@@ -22,7 +21,7 @@ pub fn main() !void {
             try s.searchForInputStringPosix();
         },
         .windows => {
-            try s.searchForInputString();
+            try s.searchForInputStringWindows();
         },
         else => {
             std.debug.print("Non-supported OS type, please ensure you are on macOS, Linux, or a windows based system.", .{});
