@@ -15,6 +15,9 @@ def print_stable_changelog() -> None:
     latest, second = get_last_two_commits()
     url = f"compare/{second}...{latest}"
     commits = handle_get_request(url)
+    if commits is None:
+        return None
+
     for commit in commits["commits"]:
         # Print the commit details
         print(format_output(commit))

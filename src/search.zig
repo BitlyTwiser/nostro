@@ -69,18 +69,11 @@ pub const Search = struct {
             }
 
             if (match_found) {
-                if (os_tree.isPosix) |posix| {
-                    if (posix) {
-                        const start = std.mem.indexOf(u8, inner_path.path, self.match_str_raw);
-                        const end = start.? + self.match_str_raw.len;
+                const start = std.mem.indexOf(u8, inner_path.path, self.match_str_raw);
+                const end = start.? + self.match_str_raw.len;
 
-                        const full_path = try std.fmt.allocPrint(self.allocator, "{s}{s}{s}\n", .{ inner_path.path[0..start.?], self.match_str, inner_path.path[end..inner_path.path.len] });
-                        std.debug.print("{s}", .{full_path});
-                    } else {
-                        // Find way to color in windows
-                        std.debug.print("{s}\\{s}\n", .{ inner_path.path, inner_path.basename });
-                    }
-                }
+                const full_path = try std.fmt.allocPrint(self.allocator, "{s}{s}{s}\n", .{ inner_path.path[0..start.?], self.match_str, inner_path.path[end..inner_path.path.len] });
+                std.debug.print("{s}", .{full_path});
             }
         }
     }
