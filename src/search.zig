@@ -2,10 +2,16 @@
 const std = @import("std");
 const cli = @import("cli.zig").raw;
 const mvzr = @import("mvzr");
+const bultin = @import("builtin");
+const os_tree = @import("os.zig");
+const ansi = @import("ansi.zig");
 
 pub const Search = struct {
     allocator: std.mem.Allocator,
     parsed_cli: cli,
+    match_indicies: [2]usize,
+    match_str: []const u8 = "",
+    match_str_raw: []const u8 = "",
 
     const Self = @This();
 
@@ -14,12 +20,11 @@ pub const Search = struct {
         return Self{
             .allocator = allocator,
             .parsed_cli = parsed_cli,
+            .match_indicies = [2]usize{ 0, 0 }, // Start and end incidies for the sector of data to color for matches
         };
     }
 
     pub fn searchForInputStringWindows(self: *Self) !void {
-        std.debug.print("Searching for value {s}", .{self.parsed_cli.term});
-
         if (self.parsed_cli.path) |p| {
             return try self.search(p);
         }
@@ -29,9 +34,8 @@ pub const Search = struct {
     }
 
     // All machines that are not windows, i.e. macOS and Linux
-    pub fn searchForInputStringPosix(self: Self) !void {
+    pub fn searchForInputStringPosix(self: *Self) !void {
         if (self.parsed_cli.path) |p| {
-            std.debug.print("Searching for value {s} on posix system at patt: {s}\n", .{ self.parsed_cli.term, p });
             return try self.search(p);
         }
 
@@ -39,7 +43,7 @@ pub const Search = struct {
         try self.search("/");
     }
 
-    fn search(self: Self, directory_path: []const u8) !void {
+    fn search(self: *Self, directory_path: []const u8) !void {
         const f_options = std.fs.Dir.OpenDirOptions{ .iterate = true, .access_sub_paths = true };
         const directory = try std.fs.openDirAbsolute(directory_path, f_options);
 
@@ -65,13 +69,24 @@ pub const Search = struct {
             }
 
             if (match_found) {
-                std.debug.print("{s}\n", .{inner_path.basename});
+                if (os_tree.isPosix) |posix| {
+                    if (posix) {
+                        const start = std.mem.indexOf(u8, inner_path.path, self.match_str_raw);
+                        const end = start.? + self.match_str_raw.len;
+
+                        const full_path = try std.fmt.allocPrint(self.allocator, "{s}{s}{s}\n", .{ inner_path.path[0..start.?], self.match_str, inner_path.path[end..inner_path.path.len] });
+                        std.debug.print("{s}", .{full_path});
+                    } else {
+                        // Find way to color in windows
+                        std.debug.print("{s}\\{s}\n", .{ inner_path.path, inner_path.basename });
+                    }
+                }
             }
         }
     }
 
     // Match will check all conditions for a pattern match to denote a found input string
-    fn match(self: Self, match_value: []const u8) !bool {
+    fn match(self: *Self, match_value: []const u8) !bool {
         if (self.parsed_cli.i) |lowercase| {
             if (lowercase) _ = std.ascii.lowerString(@constCast(self.parsed_cli.term), self.parsed_cli.term);
             _ = std.ascii.lowerString(@constCast(match_value), match_value);
@@ -88,11 +103,34 @@ pub const Search = struct {
             const regex = mvzr.compile(self.parsed_cli.term);
             if (regex) |re| {
                 match_regex = re.isMatch(match_value);
+
+                if (match_regex) {
+                    const owned_match = try re.match(match_value).?.toOwnedMatch(self.allocator);
+
+                    self.match_indicies[0] = owned_match.start;
+                    self.match_indicies[1] = owned_match.end;
+
+                    self.match_str = try ansi.colorRed(self.allocator, owned_match.slice);
+                    self.match_str_raw = owned_match.slice;
+                }
             } else {
                 match_regex = false;
             }
         }
 
-        return match_contains or match_eql or match_regex;
+        const found = match_contains or match_eql or match_regex;
+
+        if (match_contains or match_eql) {
+            const start_index = std.mem.indexOf(u8, match_value, self.parsed_cli.term);
+            const end_index = start_index.? + self.parsed_cli.term.len;
+
+            self.match_indicies[0] = start_index.?;
+            self.match_indicies[1] = end_index;
+
+            self.match_str = try ansi.colorRed(self.allocator, self.parsed_cli.term);
+            self.match_str_raw = self.parsed_cli.term;
+        }
+
+        return found;
     }
 };

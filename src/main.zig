@@ -3,6 +3,8 @@ const snek = @import("snek");
 const cli = @import("cli.zig").raw;
 const search = @import("search.zig").Search;
 const builtin = @import("builtin");
+const os_tree = @import("os.zig");
+const tree = @import("os.zig").osTree;
 
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
@@ -15,17 +17,18 @@ pub fn main() !void {
 
     var s = try search.init(allocator, parsed_cli);
 
-    switch (builtin.os.tag) {
-        // Further extend this list later
-        .linux, .macos, .openbsd, .netbsd, .freebsd, .kfreebsd, .solaris, .hurd, .dragonfly => {
-            try s.searchForInputStringPosix();
-        },
-        .windows => {
-            try s.searchForInputStringWindows();
-        },
-        else => {
-            std.debug.print("Non-supported OS type, please ensure you are on macOS, Linux, or a windows based system.", .{});
-            return;
-        },
+    // Set working architecture
+    const os = try tree.init();
+    os.setArch();
+
+    if (os_tree.isPosix) |posix| {
+        if (posix) {
+            return try s.searchForInputStringPosix();
+        }
+
+        return try s.searchForInputStringWindows();
+    } else {
+        std.debug.print("Non-supported OS type, please ensure you are on macOS, Linux, or a windows based system.", .{});
+        return;
     }
 }
