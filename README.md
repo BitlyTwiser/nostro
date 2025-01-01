@@ -1,12 +1,12 @@
-# zipgrep
-Zipgrep recursively searches directories for a given string and selected inputs.
+# nostro
+Nostro recursively searches directories for a given string and selected inputs.
 
 ## Inputs
 All flags are optional, if no flags (other than the mandatory `term` flag) are passed, then zipgrep just does a dumb string eql/contains search and nothing else. i.e. Will just hunt for any exact mathces or strings containing the given pattern. Otherwise, the flags will be incorporated.
 
 Note: *ALL* flags are treated as *OR* statements when entered. If you enter `-e` and `-p` zipgrep assumes you desire *either* of the given elements to be present, so it will match if the prefix or regex match.
 
-Zipgrep uses the following flags to denote search string:
+Nostro uses the following flags to denote search string:
 
 Mandatory flags:
 ```bash
