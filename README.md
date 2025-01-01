@@ -18,7 +18,7 @@ Optional flags to refine search:
 ```bash
 -path="path" // If path is not set, nostro will start from the root of your OS. THis can take a while, so generally its recommended to set a directory.
 
--type="f or d" // Denotes if you are searching for a file or a directory. Default is to search for files unless specified otherwise
+-t="f or d" // Denotes if you are searching for a file or a directory. Default is to search for files unless specified otherwise
 
 -e=Optional (optional: true)
 
