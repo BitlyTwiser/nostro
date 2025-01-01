@@ -38,16 +38,16 @@ jobs:
       # Linux binary creation
       - name: Package and create binary Linux
         run: |
-          mkdir -p zipgrep 
-          zig build -p zipgrep_linux/ --release=fast -Dtarget=x86_64-linux
-          zip -r zipgrep_linux.zip zipgrep_linux
+          mkdir -p nostro 
+          zig build -p nostro_linux/ --release=fast -Dtarget=x86_64-linux
+          zip -r nostro_linux.zip nostro_linux
 
       # Windows binary creation
       - name: Package and create binary Windows
         run: |
-          mkdir -p zipgrep_windows 
-          zig build -p zipgrep_windows/--release=fast -Dtarget=x86_64-windows
-          zip -r zipgrep_windows.zip zipgrep_windows
+          mkdir -p nostro_windows 
+          zig build -p nostro_windows/--release=fast -Dtarget=x86_64-windows
+          zip -r nostro_windows.zip nostro_windows
 
       # Changelog generation
       - name: Create changelog
@@ -72,7 +72,7 @@ jobs:
           release_name: Binary Release - ${{ steps.date.outputs.date }}
           body: |
             **Binary release - ${{ steps.date.outputs.date }}**
-            This build is the latest code changes for zipgrep.
+            This build is the latest code changes for nostro.
             ## Release notes
             ###  Revision (${{ steps.version_date.outputs.date }}):
             ${{ steps.changelog.outputs.content }}
@@ -80,25 +80,25 @@ jobs:
           prerelease: true
 
       # Upload binaries (Windows)
-      - name: Upload zipgrep Binary Windows
-        id: upload-zipgrep-binary-windows
+      - name: Upload nostro Binary Windows
+        id: upload-nostro-binary-windows
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./zipgrep_windows.zip
-          asset_name: zipgrep_${{ steps.version_date.outputs.date }}_binary_windows.zip
+          asset_path: ./nostro_windows.zip
+          asset_name: nostro_${{ steps.version_date.outputs.date }}_binary_windows.zip
           asset_content_type: application/zip
 
       # Upload binaries (Linux)
-      - name: Upload zipgrep Binary Linux 
-        id: upload-zipgrep-binary-linux
+      - name: Upload nostro Binary Linux 
+        id: upload-nostro-binary-linux
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./zipgrep_linux.zip
-          asset_name: zipgrep_${{ steps.version_date.outputs.date }}_binary_linux.zip
+          asset_path: ./nostro_linux.zip
+          asset_name: nostro_${{ steps.version_date.outputs.date }}_binary_linux.zip
           asset_content_type: application/zip

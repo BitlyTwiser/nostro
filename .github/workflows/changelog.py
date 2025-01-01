@@ -8,7 +8,7 @@ from typing import Union, Any, Optional, TYPE_CHECKING, cast
 # Set up your personal access token and the repository details
 token = os.environ.get('GH_TOKEN')
 repo_owner = "bitlytwiser"
-repo_name = "zipgrep"
+repo_name = "nostro"
 
 # Get last two commits from main branch and compare. (Note: If this is the first commit ever, it would break until a 2nd commit is made)
 def print_stable_changelog() -> None:

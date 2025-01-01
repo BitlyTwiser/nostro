@@ -2,9 +2,9 @@
 Nostro recursively searches directories for a given string and selected inputs.
 
 ## Inputs
-All flags are optional, if no flags (other than the mandatory `term` flag) are passed, then zipgrep just does a dumb string eql/contains search and nothing else. i.e. Will just hunt for any exact mathces or strings containing the given pattern. Otherwise, the flags will be incorporated.
+All flags are optional, if no flags (other than the mandatory `term` flag) are passed, then nostro just does a dumb string eql/contains search and nothing else. i.e. Will just hunt for any exact mathces or strings containing the given pattern. Otherwise, the flags will be incorporated.
 
-Note: *ALL* flags are treated as *OR* statements when entered. If you enter `-e` and `-p` zipgrep assumes you desire *either* of the given elements to be present, so it will match if the prefix or regex match.
+Note: *ALL* flags are treated as *OR* statements when entered. If you enter `-e` and `-p` nostro assumes you desire *either* of the given elements to be present, so it will match if the prefix or regex match.
 
 Nostro uses the following flags to denote search string:
 
@@ -16,7 +16,7 @@ Mandatory flags:
 Optional flags to refine search:
 
 ```bash
--path="path" // If path is not set, zipgrep will start from the root of your OS. THis can take a while, so generally its recommended to set a directory.
+-path="path" // If path is not set, nostro will start from the root of your OS. THis can take a while, so generally its recommended to set a directory.
 
 -type="f or d" // Denotes if you are searching for a file or a directory. Default is to search for files unless specified otherwise
 
@@ -47,6 +47,6 @@ sudo chrt -f 99 /usr/bin/time --verbose <benchmark>
 
 Examples:
 ```zig
-./zig-out/bin/zipgrep -term="firm" -path="/home/butterz/Documents" -i=true -type=f
-./zig-out/bin/zipgrep -term="(fi)" -path="/home/butterz/Documents" -e=true 
+./zig-out/bin/nostro -term="firm" -path="/home/butterz/Documents" -i=true -type=f
+./zig-out/bin/nostro -term="(fi)" -path="/home/butterz/Documents" -e=true 
 ```
