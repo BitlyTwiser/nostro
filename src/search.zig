@@ -55,6 +55,7 @@ pub const Search = struct {
                 .file => {
                     // Check file name
                     if (!self.parsed_cli.fileSearch()) continue;
+
                     match_found = try self.match(inner_path.basename);
                 },
                 .directory => {

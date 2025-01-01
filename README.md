@@ -47,6 +47,6 @@ sudo chrt -f 99 /usr/bin/time --verbose <benchmark>
 
 Examples:
 ```zig
-./zig-out/bin/nostro -term="firm" -path="/home/butterz/Documents" -i=true -type=f
+./zig-out/bin/nostro -term="firm" -path="/home/butterz/Documents" -i=true -t=f
 ./zig-out/bin/nostro -term="(fi)" -path="/home/butterz/Documents" -e=true 
 ```
