@@ -33,8 +33,15 @@ Utilizing the `-e=true` flag will expect a regular expression in the term field 
 
 Utilizing `-i` will lowercase cast the input strings to avoid any case sensitive matching.
 
-## Outputs:
+### Outputs
 The output is similiar to egrep. The values, if found, are printed on individual lines to be viewed by the user
+
+###
+Examples:
+```zig
+./zig-out/bin/nostro -term="firm" -path="/home/butterz/Documents" -i=true -t=f
+./zig-out/bin/nostro -term="(fi)" -path="/home/butterz/Documents" -e=true 
+```
 
 ## Benchmarks
 Note: I did not make this application in any attempt to beat any existing tools out there (since plenty do this *exact* thing), but just a quick item to curate over an hour or two to try out different Zig regex engines. I did toss benchmarks in here simply for fun and to satiate my inner data nerd. 
@@ -45,8 +52,3 @@ I did not parake in establishing a fancy benchmarking enviornment, I utilized th
 sudo chrt -f 99 /usr/bin/time --verbose <benchmark>
 ```
 
-Examples:
-```zig
-./zig-out/bin/nostro -term="firm" -path="/home/butterz/Documents" -i=true -t=f
-./zig-out/bin/nostro -term="(fi)" -path="/home/butterz/Documents" -e=true 
-```
