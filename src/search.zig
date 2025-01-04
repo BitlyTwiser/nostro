@@ -45,7 +45,17 @@ pub const Search = struct {
 
     fn search(self: *Self, directory_path: []const u8) !void {
         const f_options = std.fs.Dir.OpenDirOptions{ .iterate = true, .access_sub_paths = true };
-        const directory = try std.fs.openDirAbsolute(directory_path, f_options);
+        var directory: std.fs.Dir = undefined;
+
+        // If not absolute, then build path via CWD and access path from given path
+        if (!std.fs.path.isAbsolute(directory_path)) {
+            // dir.openDir(sub_path: []const u8, args: OpenDirOptions)
+            directory = try std.fs.cwd().openDir(directory_path, f_options);
+        } else {
+            directory = try std.fs.openDirAbsolute(directory_path, f_options);
+        }
+
+        defer directory.close();
 
         var walker = try directory.walk(self.allocator);
 
