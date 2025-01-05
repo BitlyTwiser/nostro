@@ -26,6 +26,10 @@ Optional flags to refine search:
 
 ```
 
+## Limitations
+Nostro (currently) does not read files for the given input strings, Nostro simply parses the files on disk to ascertain file names, not contents. 
+If you wish to parse the contents of files, use [Ripgrep](https://github.com/BurntSushi/ripgrep) or a similiar application.
+
 ## Usage
 
 ### Regular expression:
@@ -51,4 +55,14 @@ I did not parake in establishing a fancy benchmarking enviornment, I utilized th
 ```bash
 sudo chrt -f 99 /usr/bin/time --verbose <benchmark>
 ```
+
+```bash
+./zig-out/bin/nostro -term='[A-Z]\w+' -path="../linux" -e=true -t=f
+```
+Results:
+![Benchmark](./assets/benchmarks.png)
+
+## Corpus
+The linux kernel code was utilized for these expiriments: https://github.com/BurntSushi/linux
+It is a rather robust download, but offered a decent sized allotment of data to attempt to parse.
 
