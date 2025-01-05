@@ -64,5 +64,5 @@ Results:
 
 ## Corpus
 The linux kernel code was utilized for these expiriments: https://github.com/BurntSushi/linux
-It is a rather robust download, but offered a decent sized allotment of data to attempt to parse.
+It is a rather robust download, but offered a decently sized allotment of data to attempt to parse.
 
