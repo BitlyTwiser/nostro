@@ -49,6 +49,13 @@ jobs:
           zig build -p nostro_windows/--release=fast -Dtarget=x86_64-windows
           zip -r nostro_windows.zip nostro_windows
 
+      # MacOS binary creation
+      - name: Package and create binary Windows
+        run: |
+          mkdir -p nostro_macos
+          zig build -p nostro_macos/--release=fast -Dtarget=x86_64-windows
+          zip -r nostro_macos.zip nostro_macos
+
       # Changelog generation
       - name: Create changelog
         env:
@@ -101,4 +108,16 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./nostro_linux.zip
           asset_name: nostro_${{ steps.version_date.outputs.date }}_binary_linux.zip
+          asset_content_type: application/zip
+
+      # Upload binaries (MacOS)
+      - name: Upload nostro Binary MacOS
+        id: upload-nostro-binary-macos
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nostro_macos.zip
+          asset_name: nostro_${{ steps.version_date.outputs.date }}_binary_macos.zip
           asset_content_type: application/zip
