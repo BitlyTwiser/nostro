@@ -97,7 +97,7 @@ If you wish to parse the contents of files, use [Ripgrep](https://github.com/Bur
 ## Honorable Mentions
 Initially, I thought I would re-create the wheel and make a regex parsing libary (naturally this seemed like the best idea :3 ). 
 
-After some rigerous internal debate, I decided to attempt to utilize the existing Zig packages out there to see what would would best for my needs before embarking on that journey. After trying a few I landed on (mvzr)[https://github.com/mnemnion/mvzr]
+After some rigerous internal debate, I decided to attempt to utilize the existing Zig packages out there to see what would would best for my needs before embarking on that journey. After trying a few I landed on [mvzr](https://github.com/mnemnion/mvzr)
 Go checkout the repo and such if you like the work :) It works well and its pretty quick and efficient
 
 [Top](#contents)
