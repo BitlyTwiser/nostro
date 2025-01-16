@@ -1,6 +1,6 @@
 <div align="center"> 
 
-<!-- <img src="/assets/logo.png" width="450" height="500"> -->
+<img src="/assets/logo.jpg" width="450" height="500">
 
 # nostro
 Nostro recursively searches directories for a user provided inputs.
