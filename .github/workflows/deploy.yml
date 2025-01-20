@@ -46,14 +46,14 @@ jobs:
       - name: Package and create binary Windows
         run: |
           mkdir -p nostro_windows 
-          zig build -p nostro_windows/--release=fast -Dtarget=x86_64-windows
+          zig build -p nostro_windows/ --release=fast -Dtarget=x86_64-windows
           zip -r nostro_windows.zip nostro_windows
 
       # MacOS binary creation
       - name: Package and create binary Windows
         run: |
           mkdir -p nostro_macos
-          zig build -p nostro_macos/--release=fast -Dtarget=x86_64-windows
+          zig build -p nostro_macos/ --release=fast -Dtarget=x86_64-macos
           zip -r nostro_macos.zip nostro_macos
 
       # Changelog generation
